@@ -1,4 +1,4 @@
-@Library("TemplateLibrary")
+@Library("TemplateLibrary@0.1") _
 
 pipeline {
  agent any
