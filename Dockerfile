@@ -1,4 +1,5 @@
-FROM tomcat:latest
+FROM node:7-alpine
 
-COPY warfile /data/
+RUN apt-get update && apt-get install tomcat9
+COPY **/target/*.war /data/
 
