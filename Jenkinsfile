@@ -1,10 +1,13 @@
+@Library("TemplateLibrary")
+
 pipeline {
  agent any
 stages{
   stage ('CodeBuild'){
      steps{
          script{
-           git branch: 'develop', credentialsId: 'd2d051a1-abeb-40d1-9a4f-f5a2fcdec990', url: 'https://github.com/wakeman83/insecurebank.git'
+           checkout.checkOut('https://github.com/wakeman83/insecurebank.git', 'develop',d2d051a1-abeb-40d1-9a4f-f5a2fcdec990')
+           //git branch: 'develop', credentialsId: 'd2d051a1-abeb-40d1-9a4f-f5a2fcdec990', url: 'https://github.com/wakeman83/insecurebank.git'
            sh 'mvn clean package -DskipTests'
            sh 'ls -al target'
            docker.build ('insecurebank:latest')
@@ -12,7 +15,6 @@ stages{
            aquaMicroscanner imageName: 'insecurebank:latest',notCompliesCmd: '',onDisallowed:'fail',outputFormat: 'json'
            stash includes: '**/target/*.war', name:'warfile'
            stash includes: '**/**',name: 'Source'
-           stash includes: '**/**',name: 'Dockerfile'
          }
            
         } 
