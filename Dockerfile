@@ -1,4 +1,4 @@
 FROM tomcat:latest
 
-COPY **/target/*.war /data/app.war
+COPY target/insecure-bank.war /data/app.war
 
