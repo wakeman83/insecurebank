@@ -1,0 +1,3 @@
+fileignoreconfig:
+- filename: Jenkinsfile
+  checksum: c3c3a4f9e2f720f4e53e50940d63eabc4cacac02b6740d7136b1bdca7bf86db6
