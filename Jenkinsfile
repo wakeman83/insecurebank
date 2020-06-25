@@ -6,8 +6,7 @@ stages{
          script{
            git branch: 'develop', credentialsId: 'd2d051a1-abeb-40d1-9a4f-f5a2fcdec990', url: 'https://github.com/wakeman83/insecurebank.git'
            sh 'mvn clean package -DskipTests'
-           sh 'ls -al'
-           sh 'cd ..;ls -al'
+           sh 'ls -al target'
            docker.build ('insecurebank:latest')
            echo 'Image is built'
            aquaMicroscanner imageName: 'insecurebank:latest',notCompliesCmd: '',onDisallowed:'fail',outputFormat: 'json'
