@@ -10,10 +10,10 @@ stages{
            echo 'Checkout done'
            //git branch: 'develop', credentialsId: 'd2d051a1-abeb-40d1-9a4f-f5a2fcdec990', url: 'https://github.com/wakeman83/insecurebank.git'
            sh 'mvn clean package -DskipTests'
-           sh 'ls -al target'
-           docker.build ('insecurebank:latest')
-           echo 'Image is built'
-           aquaMicroscanner imageName: 'insecurebank:latest',notCompliesCmd: '',onDisallowed:'fail',outputFormat: 'json'
+
+           //docker.build ('insecurebank:latest')
+           //echo 'Image is built'
+           //aquaMicroscanner imageName: 'insecurebank:latest',notCompliesCmd: '',onDisallowed:'fail',outputFormat: 'json'
            stash includes: '**/target/*.war', name:'warfile'
            stash includes: '**/**',name: 'Source'
          }
@@ -22,20 +22,17 @@ stages{
       }
       
 
-   //stage ('SAST') {
-//            steps {
-  //              unstash 'Source'
-    //            withCoverityEnvironment(coverityInstanceUrl: 'http://localhost:8088/', projectName: 'BSIMM-Sample', streamName: 'BSIMM-Sample', viewName: '') {
-      //              withCredentials([usernamePassword(credentialsId: 'Coverity-Connect-Creds', passwordVariable: 'COV_PASS', usernameVariable: 'COV_USER')]) {
-        //                sh '$COVERITY_TOOL_HOME/bin/cov-build --dir /opt/coverity-workdir/idir --return-emit-failures --delete-stale-tus mvn clean -Dmaven.test.skip=true install'
-          //              sh '$COVERITY_TOOL_HOME/bin/cov-emit-java --dir /opt/coverity-workdir/idir --war target/auth-2.1.1.RELEASE.war'
-            //            sh '$COVERITY_TOOL_HOME/bin/cov-analyze --dir /opt/coverity-workdir/idir --webapp-security --strip-path $(pwd)'
-              //          sh '$COVERITY_TOOL_HOME/bin/cov-commit-defects --encryption none --dir /opt/coverity-workdir/idir --url $COV_URL --user ${COV_USER} --password ${COV_PASS} --stream $COV_STREAM' 
-                //    }
+   stage ('SAST') {
+            steps  {
+                unstash 'Source'
+                cd Source
+                sh "mvn com.github.spotbugs:spotbugs-maven-plugin:4.0.4:spotbugs"
+                archiveArtifacts 'target/spotbugsXml.xml'
+                
+                    }
                         
-            //    }
-        //    }
-    //    }
+               }
+
         
   //  stage ('SCA'){
 //        steps{
