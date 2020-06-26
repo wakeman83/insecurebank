@@ -6,7 +6,8 @@ stages{
   stage ('CodeBuild'){
      steps{
          script{
-           call checkoutfrom.checkOutfromgit('https://github.com/wakeman83/insecurebank.git', 'develop','d2d051a1-abeb-40d1-9a4f-f5a2fcdec990')
+           checkoutfrom.checkOutfromgit('https://github.com/wakeman83/insecurebank.git', 'develop','d2d051a1-abeb-40d1-9a4f-f5a2fcdec990')
+           echo 'Checkout done'
            //git branch: 'develop', credentialsId: 'd2d051a1-abeb-40d1-9a4f-f5a2fcdec990', url: 'https://github.com/wakeman83/insecurebank.git'
            sh 'mvn clean package -DskipTests'
            sh 'ls -al target'
